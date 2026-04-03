@@ -1,5 +1,5 @@
 # English README
 
-The maintained English documentation is in [`README.en.md`](./README.en.md).
+The default English documentation is in [`README.md`](./README.md).
 
-This file is kept as a compatibility entry to avoid broken external links.
+The mirrored English version remains available at [`README.en.md`](./README.en.md) for compatibility.

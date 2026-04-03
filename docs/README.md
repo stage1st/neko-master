@@ -1,35 +1,36 @@
-# 文档索引
+# Documentation Index
 
-**中文 | [English](./README.en.md)**
+[中文](./README.zh.md) | **English**
 
-## 架构
+## Architecture
 
-- [系统架构](./architecture.md) — 端到端架构、数据流、模块设计、ClickHouse 集成
-- [发布清单](./release-checklist.md) — 版本发布操作步骤
+- [System Architecture](./architecture.en.md) — end-to-end architecture, data flow, module design, ClickHouse integration
+- [Release Checklist (Chinese)](./release-checklist.md) — version release steps
 
 ## Agent
 
-- [文档总览](./agent/README.md) — Agent 文档导航
-- [架构说明](./agent/overview.md) — 工作原理、直连 vs Agent 模式对比、安全模型
-- [快速开始](./agent/quick-start.md) — 从 UI 到运行的完整步骤
-- [安装指南](./agent/install.md) — 脚本安装、systemd / launchd / OpenWrt 开机自启
-- [参数配置](./agent/config.md) — 完整运行时参数列表与示例
-- [发布流程](./agent/release.md) — 版本命名规范与 CI/CD 流程
-- [常见问题](./agent/troubleshooting.md) — 常见错误与解决方法
+- [Documentation Index](./agent/README.md) — Agent docs navigation
+- [Overview](./agent/overview.en.md) — how it works, Direct vs Agent comparison, security model
+- [Quick Start](./agent/quick-start.en.md) — end-to-end setup from UI to running agent
+- [Install Guide](./agent/install.en.md) — script install, systemd / launchd / OpenWrt autostart
+- [Configuration](./agent/config.en.md) — full flag reference and examples
+- [Release Flow](./agent/release.en.md) — versioning conventions and CI/CD pipeline
+- [Troubleshooting](./agent/troubleshooting.en.md) — common errors and fixes
 
-## 研究报告
+## Research Reports
 
-- [Kimi 2.5](./research/kimi2.5.zh.md) / [English](./research/kimi2.5.en.md)
-- [GPT-5.3](./research/GPT5.3.zh.md) / [English](./research/GPT5.3.en.md)
-- [GLM-5](./research/glm5.zh.md) / [English](./research/glm5.en.md)
+- [Kimi 2.5](./research/kimi2.5.en.md) / [中文](./research/kimi2.5.zh.md)
+- [GPT-5.3](./research/GPT5.3.en.md) / [中文](./research/GPT5.3.zh.md)
+- [GLM-5](./research/glm5.en.md) / [中文](./research/glm5.zh.md)
 
-## 内部开发文档
+## Internal Development Docs
 
-> 以下为开发过程中的内部分析与计划文档，不面向最终用户。
+> Some operational and internal development docs are currently Chinese-only.
+> Internal analysis and planning documents from development. Not intended for end users.
 
-- [ClickHouse 数据流分析](./dev/clickhouse-dataflow-analysis.md)
-- [ClickHouse 数据流分析报告](./dev/clickhouse-dataflow-analysis-report.md)
-- [ClickHouse 迁移 I/O 分析](./dev/clickhouse-migration-io-analysis.md)
-- [ClickHouse 重构计划](./dev/clickhouse-refactor-plan.md)
-- [ClickHouse 评审报告](./dev/clickhouse-review-report.md)
-- [refactor/clickhouse 分支评审](./dev/review-refactor-clickhouse-branch.md)
+- [ClickHouse Dataflow Analysis](./dev/clickhouse-dataflow-analysis.md)
+- [ClickHouse Dataflow Analysis Report](./dev/clickhouse-dataflow-analysis-report.md)
+- [ClickHouse Migration I/O Analysis](./dev/clickhouse-migration-io-analysis.md)
+- [ClickHouse Refactor Plan](./dev/clickhouse-refactor-plan.md)
+- [ClickHouse Review Report](./dev/clickhouse-review-report.md)
+- [refactor/clickhouse Branch Review](./dev/review-refactor-clickhouse-branch.md)

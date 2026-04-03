@@ -4,5 +4,5 @@ contact_links:
     url: https://github.com/foru17/neko-master/blob/main/README.md
     about: Please check deployment and FAQ sections before opening an issue.
   - name: Architecture Docs / 架构文档
-    url: https://github.com/foru17/neko-master/blob/main/docs/architecture.md
-    about: Read the architecture guide for system design details.
+    url: https://github.com/foru17/neko-master/blob/main/docs/architecture.en.md
+    about: Read the English architecture guide for system design details.

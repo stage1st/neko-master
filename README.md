@@ -5,12 +5,12 @@
 </p>
 
 <p align="center">
-  <b>让你的网络流量一目了然。</b><br>
-  <span>实时监控 · 流量审计 · 多网关管理</span>
+  <b>See your network traffic clearly.</b><br>
+  <span>Real-time monitoring · Traffic auditing · Multi-gateway support</span>
 </p>
 
 <p align="center">
-   <b>中文 | <a href="./README.en.md">English</a></b>
+  <b>English</b> | <a href="./README.zh.md">中文</a>
 </p>
 
 <p align="center">
@@ -21,19 +21,20 @@
   <a href="https://github.com/foru17/neko-master/blob/main/LICENSE"><img src="https://img.shields.io/github/license/foru17/neko-master?style=flat-square&color=green" alt="License"></a>
   <img src="https://img.shields.io/badge/Node.js-22-339933?style=flat-square&logo=node.js">
   <a href="https://github.com/foru17/neko-master/actions/workflows/docker-build.yml"><img src="https://img.shields.io/github/actions/workflow/status/foru17/neko-master/docker-build.yml?style=flat-square&label=Docker%20CI" alt="Docker CI"></a>
-  <a href="./docs/architecture.md"><img src="https://img.shields.io/badge/docs-architecture-0ea5e9?style=flat-square" alt="Architecture Docs"></a>
+  <a href="./docs/architecture.en.md"><img src="https://img.shields.io/badge/docs-architecture-0ea5e9?style=flat-square" alt="Architecture Docs"></a>
 </p>
 
 > [!IMPORTANT]
-> **免责声明**
+> **Disclaimer**
 >
-> 本项目为 **网络流量分析与可视化工具**，
-> 用于展示与统计本地网关的流量数据。
+> This project is a traffic analysis and visualization tool
+> for local gateway environments.
 >
-> 本项目 **不提供任何网络接入服务、代理订阅或跨网络连接功能**。
-> 所有数据均来源于用户自有网络环境。
+> It does not provide any network access service,
+> proxy subscription, or cross-network connectivity.
+> All data is collected from the user's own network environment.
 >
-> 本项目遵循 MIT 协议开源，不对因使用本软件产生的任何后果承担责任。请在合规范围内使用。
+> This project is open-sourced under the MIT License. We assume no responsibility for any consequences resulting from the use of this software. Please use it in compliance with applicable laws and regulations.
 
 <table>
   <tr>
@@ -54,47 +55,54 @@
   </tr>
 </table>
 
-## 🌐 在线演示
+## About the Name
 
-**演示地址**: https://neko-master.is26.com  
-**访问密码**: `neko2026`
+**Neko** (ねこ) means _cat_ in Japanese.
+Pronounced **/ˈneɪkoʊ/** (NEH-ko).
 
-> 演示站为只读展示模式，部分功能受限。
+Like a cat, Neko Master observes network traffic quietly and precisely.
+It is a lightweight analytics dashboard designed for modern gateway environments.
 
-## 关于名称
+## 📋 Table of Contents
 
-**Neko**（ねこ）在日语中意为“猫”，
-发音为 **/ˈneɪkoʊ/**（NEH-ko）。
+- [✨ Features](#-features)
+- [🚀 Quick Start](#-quick-start)
+- [🤖 Agent Deployment](#-agent-deployment)
+- [📖 First Use](#-first-use)
+- [🔧 Port Conflict Resolution](#-port-conflict-resolution)
+- [🐳 Docker Configuration](#-docker-configuration)
+- [🗄️ ClickHouse (Optional)](#-clickhouse-optional)
+- [🌐 Reverse Proxy & Tunnel](#-reverse-proxy--tunnel)
+- [🔐 Authentication & Security](#-authentication--security)
+- [❓ FAQ](#-faq)
+- [🏗️ Architecture Guide](#-architecture-guide)
+- [🤝 Feedback & Issues](#-feedback--issues)
+- [📁 Project Structure](#-project-structure)
+- [🛠️ Tech Stack](#-tech-stack)
+- [📄 License](#-license)
 
-如同猫一般安静而敏锐，
-Neko Master 专注于对网络流量进行轻量、精确的分析与可视化。
+## ✨ Features
 
-## 📋 目录
+| Feature                     | Description                                                   |
+| --------------------------- | ------------------------------------------------------------- |
+| 📊 **Real-time Monitoring** | WebSocket real-time collection with millisecond latency       |
+| 📈 **Trend Analysis**       | Multi-dimensional traffic trends: 30min / 1h / 24h            |
+| 🌐 **Domain Analysis**      | View traffic, associated IPs, and connection count per domain |
+| 🗺️ **IP Analysis**          | ASN, geo-location, and associated domain display              |
+| 🚀 **Proxy Statistics**     | Traffic distribution and connection count per proxy node      |
+| 📱 **PWA Support**          | Install as desktop app for native experience                  |
+| 🌙 **Dark Mode**            | Light / Dark / System theme support                           |
+| 🌍 **i18n Support**         | English / Chinese seamless switching                          |
+| 🔄 **Multi-Backend**        | Monitor multiple OpenClash backend instances simultaneously   |
 
-- [🚀 快速开始](#-快速开始)
-- [🤖 Agent 部署](#-agent-部署)
-- [📖 首次使用](#-首次使用)
-- [🔧 端口冲突解决](#-端口冲突解决)
-- [🐳 Docker 配置](#-docker-配置)
-- [🗄️ ClickHouse（可选）](#-clickhouse-可选)
-- [🌐 反向代理与 Tunnel](#-反向代理与-tunnel)
-- [🔐 认证与安全](#-认证与安全)
-- [❓ 常见问题](#-常见问题)
-- [🏗️ 架构文档指引](#-架构文档指引)
-- [🤝 反馈与 Issue](#-反馈与-issue)
-- [📁 项目结构](#-项目结构)
-- [🛠️ 技术栈](#-技术栈)
-- [📝 更新日志](./CHANGELOG.md)
-- [📄 许可证](#-许可证)
+## 🚀 Quick Start
 
-## 🚀 快速开始
+### Option 1: Docker Compose (Recommended)
 
-### 方式一：Docker Compose（推荐）
+> The repository's built-in `docker-compose.yml` maps `3000/3001/3002` by default.
+> Scenarios A/B below are minimal templates for common deployments.
 
-> 仓库内置的 `docker-compose.yml` 默认映射 `3000/3001/3002`。  
-> 下方场景 A/B 是更精简的常见部署模板，可按需选择。
-
-#### 场景 A：最简部署（仅暴露 3000）
+#### Scenario A: Minimal deployment (only expose 3000)
 
 ```yaml
 services:
@@ -106,7 +114,7 @@ services:
       - "3000:3000" # Web UI
     volumes:
       - ./data:/app/data
-      # 本地 MMDB（可选，文件需自行下载并放到 ./geoip）
+      # Local MMDB (optional, files should be downloaded into ./geoip)
       - ./geoip:/app/data/geoip:ro
     environment:
       - NODE_ENV=production
@@ -114,13 +122,13 @@ services:
       - COOKIE_SECRET=${COOKIE_SECRET}
 ```
 
-> 建议在 `docker-compose.yml` 同目录的 `.env` 中配置：  
-> `COOKIE_SECRET=<至少32字节随机字符串>`（可用 `openssl rand -hex 32` 生成）
+> Recommended in `.env` (same directory as `docker-compose.yml`):
+> `COOKIE_SECRET=<at least 32-byte random string>` (generate with `openssl rand -hex 32`)
 
-> 该模式完全兼容升级，页面可用。  
-> 未打通 WS 时会自动回退到 HTTP 轮询刷新。
+> This mode is fully upgrade-compatible and works out of the box.
+> If WS is not routed, the app falls back to HTTP polling automatically.
 
-#### 场景 B：实时 WebSocket（推荐，配合反向代理）
+#### Scenario B: Real-time WebSocket (recommended with reverse proxy)
 
 ```yaml
 services:
@@ -130,10 +138,10 @@ services:
     restart: unless-stopped
     ports:
       - "3000:3000" # Web UI
-      - "3002:3002" # WebSocket（供 Nginx / Tunnel 转发）
+      - "3002:3002" # WebSocket (for Nginx / Tunnel forwarding)
     volumes:
       - ./data:/app/data
-      # 本地 MMDB（可选，文件需自行下载并放到 ./geoip）
+      # Local MMDB (optional, files should be downloaded into ./geoip)
       - ./geoip:/app/data/geoip:ro
     environment:
       - NODE_ENV=production
@@ -141,25 +149,25 @@ services:
       - COOKIE_SECRET=${COOKIE_SECRET}
 ```
 
-启动服务：
+Then run:
 
 ```bash
 docker compose up -d
 ```
 
-访问 <http://localhost:3000>
+Open <http://localhost:3000> to get started.
 
-若你直接使用仓库内置 Compose 文件（默认暴露 `3000/3001/3002`），执行同一命令即可。
+If you use the repository's built-in Compose file (default `3000/3001/3002`), run the same command.
 
-### 方式二：Docker 直接运行
+### Option 2: Docker Run
 
 ```bash
-# 建议先生成固定 Cookie 密钥（用于会话持久）
+# Generate a fixed cookie secret first (for session persistence)
 export COOKIE_SECRET="$(openssl rand -hex 32)"
 ```
 
 ```bash
-# 最简（仅 3000）
+# Minimal (only 3000)
 docker run -d \
   --name neko-master \
   -p 3000:3000 \
@@ -168,7 +176,7 @@ docker run -d \
   --restart unless-stopped \
   foru17/neko-master:latest
 
-# 实时 WS（配合反代）
+# Real-time WS (with reverse proxy)
 docker run -d \
   --name neko-master \
   -p 3000:3000 \
@@ -179,72 +187,72 @@ docker run -d \
   foru17/neko-master:latest
 ```
 
-> 默认前端 API 走同域 `/api`，通常不需要额外暴露 3001。  
-> 若希望 WebSocket 实时生效，需要让反代层可以访问 `3002`；未打通时会回退到 HTTP 轮询（约 5 秒级）。
+Open <http://localhost:3000> to get started.
 
-访问 <http://localhost:3000>
+> The frontend uses same-origin `/api` by default, so port 3001 is usually not required externally.
+> For real-time WS, your reverse proxy/tunnel must be able to reach port `3002`. If not, the app falls back to ~5s HTTP polling.
 
-> `docker run` 修改外部端口时，直接改 `-p` 映射即可。  
-> 仅在“非反代直连 WS 且外部 WS 端口不是 3002”时，额外传入 `-e WS_EXTERNAL_PORT=<外部WS端口>`。
+> For `docker run`, change external ports using `-p` mappings directly.
+> Only if you use direct WS access (no reverse proxy) and external WS port is not `3002`, also pass `-e WS_EXTERNAL_PORT=<external-ws-port>`.
 >
-> 本地 MMDB 查询模式（可选）：额外挂载 `-v $(pwd)/geoip:/app/data/geoip:ro`，
-> 并在面板「设置 -> 偏好设置 -> IP 查询来源」切换到本地。
+> Local MMDB lookup mode (optional): mount `-v $(pwd)/geoip:/app/data/geoip:ro`,
+> then switch source to Local in `Settings -> Preferences -> IP Lookup Source`.
 
-### 方式三：一键脚本
+### Option 3: One-Click Script
 
-自动检测端口冲突并配置，适合不熟悉 Docker 的用户：
+Automatically detects port conflicts and configures everything:
 
 ```bash
-# 使用 curl
+# Using curl
 curl -fsSL https://raw.githubusercontent.com/foru17/neko-master/main/setup.sh | bash
 
-# 或使用 wget
+# Or using wget
 wget -qO- https://raw.githubusercontent.com/foru17/neko-master/main/setup.sh | bash
 ```
 
-脚本会自动：
+The script will automatically:
 
-- ✅ 下载 `docker-compose.yml`
-- ✅ 检测默认端口（3000/3001/3002）是否被占用
-- ✅ 提供可用的替代端口
-- ✅ 创建配置文件并启动服务
+- ✅ Download `docker-compose.yml`
+- ✅ Check if default ports (3000/3001/3002) are in use
+- ✅ Suggest available alternative ports
+- ✅ Create configuration file and start the service
 
-### 方式四：源码运行
+### Option 4: Source Code
 
 ```bash
-# 1. 克隆仓库
+# 1. Clone the repository
 git clone https://github.com/foru17/neko-master.git
 cd neko-master
 
-# 2. 安装依赖
+# 2. Install dependencies
 pnpm install
 
-# 3. 准备 collector 环境变量（源码模式读取 apps/collector/.env）
+# 3. Prepare collector env (source mode reads apps/collector/.env)
 cp apps/collector/.env.example apps/collector/.env
 
-# 4. 启动开发服务
+# 4. Start development services
 pnpm dev
 ```
 
-访问 <http://localhost:3000>
+Open <http://localhost:3000> to configure.
 
-> 源码模式下：`collector` 默认监听 `3001/3002`，`web` 默认监听 `3000`。  
-> 如果你修改了 `API_PORT`（非 3001），请同步设置 `API_URL`（例如 `API_URL=http://localhost:4001`）供 web 的 `/api` 转发使用。  
-> `apps/collector/.env.local` 的优先级高于 `apps/collector/.env`。
+> In source mode: collector listens on `3001/3002`, web listens on `3000` by default.
+> If you changed `API_PORT` (not 3001), set `API_URL` accordingly (for example `API_URL=http://localhost:4001`) so web `/api` rewrite targets the correct API.
+> `apps/collector/.env.local` takes precedence over `apps/collector/.env`.
 
-## 🤖 Agent 部署
+## 🤖 Agent Deployment
 
-当你希望中心化部署一个 Neko Master 服务，并在不同设备（OpenWrt、Linux、macOS）本地采集网关数据时，推荐使用 Agent 模式。Agent 运行在网关旁边，主动拉取数据并上报至面板，面板无需主动连接网关。
+Use Agent mode when you want one centralized Neko Master service and multiple remote devices (OpenWrt, Linux, macOS) collecting local gateway data. The agent runs near the gateway, pulls data, and reports to the panel — the panel never connects to the gateway directly.
 
-支持网关类型：**Clash / Mihomo**（WebSocket 实时）和 **Surge v5+**（HTTP 轮询）。
+Supported gateway types: **Clash / Mihomo** (WebSocket real-time) and **Surge v5+** (HTTP polling).
 
-### 快速安装（UI 生成命令）
+### Quick Install (UI-generated command)
 
-1. 在面板「设置 → 后端」中添加一个 `Agent` 类型后端，选择网关类型（Clash 或 Surge）
-2. 点击「查看安装脚本」，复制一键安装命令，在目标主机上执行：
+1. In the dashboard, go to `Settings → Backends`, add an `Agent` backend, select gateway type
+2. Click **"View Agent Script"** and copy the one-line install command, then run it on the target host:
 
 ```bash
-# Clash / Mihomo 网关示例
+# Clash / Mihomo gateway example
 curl -fsSL https://raw.githubusercontent.com/foru17/neko-master/main/apps/agent/install.sh \
   | env NEKO_SERVER='http://your-panel:3000' \
         NEKO_BACKEND_ID='1' \
@@ -253,7 +261,7 @@ curl -fsSL https://raw.githubusercontent.com/foru17/neko-master/main/apps/agent/
         NEKO_GATEWAY_URL='http://127.0.0.1:9090' \
         sh
 
-# Surge 网关示例
+# Surge gateway example
 curl -fsSL https://raw.githubusercontent.com/foru17/neko-master/main/apps/agent/install.sh \
   | env NEKO_SERVER='http://your-panel:3000' \
         NEKO_BACKEND_ID='2' \
@@ -263,56 +271,56 @@ curl -fsSL https://raw.githubusercontent.com/foru17/neko-master/main/apps/agent/
         sh
 ```
 
-安装完成后，使用 `nekoagent` 管理实例：
+After install, manage instances with `nekoagent`:
 
 ```bash
-nekoagent list               # 列出所有实例
-nekoagent status <instance>  # 查看运行状态
-nekoagent logs <instance>    # 实时日志
-nekoagent restart <instance> # 重启
-nekoagent upgrade            # 全局升级（CLI + 二进制）
+nekoagent list               # list all instances
+nekoagent status <instance>  # check running state
+nekoagent logs <instance>    # tail live logs
+nekoagent restart <instance> # restart
+nekoagent upgrade            # global upgrade (CLI + binary)
 ```
 
-> 脚本会自动检测已有安装，若已存在则只添加新实例而不重新下载二进制。
-> 同一主机可同时运行多个实例（不同 `NEKO_INSTANCE_NAME`），对应不同网关。
+> The script auto-detects an existing installation — if `neko-agent` is already present, it only adds the new instance without re-downloading.
+> Multiple instances can run on the same host (different `NEKO_INSTANCE_NAME`), each pointing to a different gateway.
 
-### Agent 文档
+### Agent Documentation
 
-- [总览](./docs/agent/overview.md)：架构说明、直连 vs Agent 对比、安全模型
-- [快速开始](./docs/agent/quick-start.md)：从 UI 到运行的完整步骤
-- [安装指南](./docs/agent/install.md)：安装方式、systemd / launchd / OpenWrt 开机自启
-- [参数配置](./docs/agent/config.md)：完整参数列表与示例
-- [发布流程](./docs/agent/release.md)：版本命名与兼容性策略
-- [常见问题](./docs/agent/troubleshooting.md)：常见错误与解决方法
+- [Overview](./docs/agent/overview.en.md): architecture, Direct vs Agent comparison, security model
+- [Quick Start](./docs/agent/quick-start.en.md): end-to-end setup from UI to running agent
+- [Install Guide](./docs/agent/install.en.md): install methods, systemd / launchd autostart
+- [Configuration](./docs/agent/config.en.md): full flag and env variable reference
+- [Release Flow](./docs/agent/release.en.md): versioning and compatibility policy
+- [Troubleshooting](./docs/agent/troubleshooting.en.md): common errors and fixes
 
-## 📖 首次使用
+## 📖 First Use
 
-![首次使用](./assets/neko-master-setup.png)
+![First Use](./assets/neko-master-setup.png)
 
-### 接入 Clash / Mihomo
+### Connect Clash / Mihomo
 
-1. 打开 <http://localhost:3000>
-2. 首次访问会弹出**网关配置**对话框
-3. 填写网络网关（如 OpenClash）连接信息：
-   - **名称**: 自定义名称（如 "Home Gateway"）
-   - **类型**: 选择 `Clash / Mihomo`
-   - **地址**: 网关后端地址（如 `192.168.101.1`）
-   - **端口**: 网关后端端口（如 `9090`）
-   - **Token**: 如果配置了 Secret 则填写，否则留空
-4. 点击「添加后端」保存配置
-5. 系统将自动开始采集并分析流量数据
+1. Open <http://localhost:3000>
+2. The **Gateway Configuration** dialog will appear on first visit
+3. Fill in your network gateway (e.g., OpenClash) connection info:
+   - **Name**: Custom name (e.g., "Home Gateway")
+   - **Type**: Select `Clash / Mihomo`
+   - **Host**: Gateway backend address (e.g., `192.168.101.1`)
+   - **Port**: Gateway backend port (e.g., `9090`)
+   - **Token**: Fill if Secret is configured, otherwise leave empty
+4. Click "Add Backend" to save
+5. The system will automatically start collecting and analyzing traffic data
 
-> 💡 **获取网关地址**: 进入网关控制面板（如 OpenClash） → 打开「外部控制」→ 复制 API 地址
+> 💡 **Get Gateway Address**: Go to your gateway control panel (e.g., OpenClash) → Enable "External Control" → Copy API address
 
-### 接入 Surge
+### Connect Surge
 
-![Surge HTTP API 配置](./assets/neko-master-surge.png)
+![Surge HTTP API Configuration](./assets/neko-master-surge.png)
 
-Neko Master 支持接入 Surge 网关，实现完整的规则链可视化和流量分析。
+Neko Master supports connecting to Surge gateways for complete rule chain visualization and traffic analysis.
 
-#### 1. 开启 Surge HTTP API
+#### 1. Enable Surge HTTP API
 
-在 Surge 配置中启用 HTTP 远程 API：
+Enable HTTP remote API in your Surge configuration:
 
 ```ini
 [General]
@@ -321,194 +329,196 @@ http-api-tls = false
 http-api-web-dashboard = true
 ```
 
-或者通过 Surge 的图形界面配置：
-- **HTTP 远程 API**: `设置` → `常规` → `HTTP 远程 API`
-- **端口**: 默认 `9091`
-- **认证**: 建议设置密码增强安全性
+Or configure via Surge's graphical interface:
 
-#### 2. 在 Neko Master 中添加 Surge 后端
+- **HTTP Remote API**: `Settings` → `General` → `HTTP Remote API`
+- **Port**: Default `9091`
+- **Authentication**: Recommended to set a password for enhanced security
 
-1. 打开 Neko Master 设置对话框
-2. 点击「添加后端」
-3. 填写连接信息：
-   - **名称**: 自定义名称（如 "Surge Home"）
-   - **类型**: 选择 `Surge`
-   - **地址**: Surge 运行的 IP 地址（如 `192.168.1.1` 或 `127.0.0.1`）
-   - **端口**: HTTP API 端口（默认 `9091`）
-   - **Token**: HTTP API 密码（如果设置了的话）
-4. 点击「测试连接」确认配置正确
-5. 保存配置
+#### 2. Add Surge Backend in Neko Master
 
-> 💡 **注意**: Surge 使用 HTTP 轮询方式获取数据（相比 Clash 的 WebSocket 实时流），数据刷新延迟约 2 秒。
+1. Open Neko Master settings dialog
+2. Click "Add Backend"
+3. Fill in the connection info:
+   - **Name**: Custom name (e.g., "Surge Home")
+   - **Type**: Select `Surge`
+   - **Host**: IP address where Surge is running (e.g., `192.168.1.1` or `127.0.0.1`)
+   - **Port**: HTTP API port (default `9091`)
+   - **Token**: HTTP API password (if configured)
+4. Click "Test Connection" to verify the configuration
+5. Save the configuration
 
-## 🔧 端口冲突解决
+> 💡 **Note**: Surge uses HTTP polling to fetch data (compared to Clash's WebSocket real-time stream), with a data refresh delay of approximately 2 seconds.
 
-如果看到错误提示端口已被占用，有以下几种解决方案：
+## 🔧 Port Conflict Resolution
 
-### 方案 1：使用 .env 文件
+If you see "port already in use" error, here are the solutions:
 
-创建 `.env` 文件（与 `docker-compose.yml` 同目录）：
+### Solution 1: Use .env File
+
+Create a `.env` file in the same directory as `docker-compose.yml`:
 
 ```env
-WEB_EXTERNAL_PORT=8080    # 修改 Web UI 端口
-API_EXTERNAL_PORT=8081    # 修改 API 端口
-WS_EXTERNAL_PORT=8082     # 修改 WebSocket 外部端口（仅直连时需要）
-COOKIE_SECRET=your-long-random-secret   # 强烈建议固定
+WEB_EXTERNAL_PORT=8080    # Change Web UI port
+API_EXTERNAL_PORT=8081    # Change API port
+WS_EXTERNAL_PORT=8082     # Change WebSocket external port (only for direct access)
+COOKIE_SECRET=your-long-random-secret   # Strongly recommended to keep fixed
 ```
 
-然后重启：
+Then restart:
 
 ```bash
 docker compose down
 docker compose up -d
 ```
 
-现在访问 <http://localhost:8080>
+Now access <http://localhost:8080>
 
-### 方案 2：直接修改 docker-compose.yml
+### Solution 2: Directly Modify docker-compose.yml
 
 ```yaml
 ports:
-  - "8080:3000" # 外部 8080 → 内部 3000
-  - "8082:3002" # 外部 8082 → 内部 3002（给反代/Tunnel 转发 WS）
+  - "8080:3000" # External 8080 → Internal 3000
+  - "8082:3002" # External 8082 → Internal 3002 (for proxy/tunnel WS forwarding)
 ```
 
-> 说明：如果你不走反代、直接让浏览器连 `ws://host:端口`，且外部 WS 端口不是 `3002`，请同时设置 `WS_EXTERNAL_PORT=<外部端口>`。
+> Note: if you use direct WS access (no reverse proxy) and external WS port is not `3002`, set `WS_EXTERNAL_PORT=<external-ws-port>`.
 
-### 方案 3：使用一键脚本
+### Solution 3: Use One-Click Script
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/foru17/neko-master/main/setup.sh | bash
 ```
 
-脚本会自动检测并提供可用的端口。
+The script will automatically detect and suggest available ports.
 
-## 🐳 Docker 配置
+## 🐳 Docker Configuration
 
-### 端口说明
+### Ports
 
-| 端口 |   用途    | 外部必需 | 说明                                             |
-| :--: | :-------: | :------: | :----------------------------------------------- |
-| 3000 | Web 界面  |    ✅    | 前端访问入口                                     |
-| 3001 | API 接口  |   可选   | 前端默认同域 `/api`，一般无需公网暴露（仓库默认 Compose 会映射） |
-| 3002 | WebSocket |   可选   | 实时推送端口，建议仅给反代层转发，不直接公网暴露（仓库默认 Compose 会映射） |
+| Port |  Purpose  | External Required | Description                                                                                                 |
+| :--: | :-------: | :---------------: | :---------------------------------------------------------------------------------------------------------- |
+| 3000 |  Web UI   |        ✅         | Frontend entry point                                                                                        |
+| 3001 |    API    |     Optional      | Frontend uses same-origin `/api` by default; usually no public exposure needed (default Compose maps it)  |
+| 3002 | WebSocket |     Optional      | Real-time push endpoint; recommended for reverse proxy/tunnel forwarding only (default Compose maps it)    |
 
-### 环境变量说明（部署）
+### Environment Variables (Deployment)
 
-| 变量名 | 默认值 | 作用 | 何时设置 |
+| Variable | Default | Purpose | When to set |
 | :-- | :-- | :-- | :-- |
-| `WEB_PORT` | `3000` | Web 服务监听端口（容器内） | 一般不改 |
-| `API_PORT` | `3001` | API 服务监听端口（容器内） | 一般不改 |
-| `COLLECTOR_WS_PORT` | `3002` | WS 服务监听端口（容器内） | 一般不改 |
-| `DB_PATH` | `/app/data/stats.db` | SQLite 文件路径 | 自定义数据目录时 |
-| `WEB_EXTERNAL_PORT` | `3000` | `docker-compose.yml` 的 Web 外部端口映射 | 外部 Web 端口变更时 |
-| `API_EXTERNAL_PORT` | `3001` | `docker-compose.yml` 的 API 外部端口映射 | 需要外部直连 API 时 |
-| `WS_EXTERNAL_PORT` | `3002` | `docker-compose.yml` 的 WS 外部端口映射；同时用于前端直连 WS 端口推断 | 非反代直连 WS 且外部端口变化时 |
-| `NEXT_PUBLIC_API_URL` | 空 | 覆盖前端 API 基地址（如 `https://api.example.com`） | API 不走同域 `/api` 时 |
-| `NEXT_PUBLIC_WS_URL` | 空 | 覆盖前端 WS 地址（支持绝对 URL 或 `/custom_ws`） | WS 路径/域名自定义时 |
-| `NEXT_PUBLIC_WS_PORT` | `3002` | WS 直连端口兜底值（**构建时注入，Docker 运行时设置无效**；Docker 场景请用 `WS_EXTERNAL_PORT`） | 仅源码自构建时需要自定义端口 |
-| `API_URL` | `http://localhost:3001` | Next.js `/api` rewrite 目标（主要用于源码/自构建） | 你修改了 API 实际监听地址时 |
-| `COOKIE_SECRET` | 自动生成 | Cookie 签名密钥；未固定时会自动生成（数据目录不持久化时重启后会话会失效） | 生产环境强烈建议固定配置 |
-| `GEOIP_LOOKUP_PROVIDER` | `online` | IP 地理查询来源（`online`/`local`） | 需要默认走本地 MMDB 查询时 |
-| `GEOIP_ONLINE_API_URL` | `https://api.ipinfo.es/ipinfo` | 在线 IP 查询接口地址（需兼容 `ipinfo.my` 的响应结构） | 仅在你部署了兼容接口时设置 |
-| `FORCE_ACCESS_CONTROL_OFF` | `false` | 强制关闭访问控制（紧急恢复） | 仅忘记密码临时使用 |
-| `SHOWCASE_SITE_MODE` | `false` | 演示只读模式（禁用敏感写操作） | 仅公开演示站点 |
+| `WEB_PORT` | `3000` | Web listen port (inside container) | Usually unchanged |
+| `API_PORT` | `3001` | API listen port (inside container) | Usually unchanged |
+| `COLLECTOR_WS_PORT` | `3002` | WS listen port (inside container) | Usually unchanged |
+| `DB_PATH` | `/app/data/stats.db` | SQLite data path | Custom data path |
+| `WEB_EXTERNAL_PORT` | `3000` | External web port mapping in `docker-compose.yml` | External web port changed |
+| `API_EXTERNAL_PORT` | `3001` | External API port mapping in `docker-compose.yml` | Direct external API access needed |
+| `WS_EXTERNAL_PORT` | `3002` | External WS port mapping in `docker-compose.yml`; also used for direct WS port inference | Direct WS access without proxy and external WS port changed |
+| `NEXT_PUBLIC_API_URL` | empty | Override frontend API base URL (e.g. `https://api.example.com`) | API is not same-origin `/api` |
+| `NEXT_PUBLIC_WS_URL` | empty | Override frontend WS URL (absolute URL or `/custom_ws`) | Custom WS path/domain |
+| `NEXT_PUBLIC_WS_PORT` | `3002` | WS direct-connection fallback port (**build-time only — setting this at Docker runtime has no effect**; use `WS_EXTERNAL_PORT` instead) | Only for custom source builds |
+| `API_URL` | `http://localhost:3001` | Next.js `/api` rewrite target (mainly source/custom builds) | API listen address changed |
+| `COOKIE_SECRET` | auto-generated | Cookie signing secret; if not fixed, sessions can be invalidated after restart when data dir is not persisted | Strongly recommended in production |
+| `GEOIP_LOOKUP_PROVIDER` | `online` | IP geolocation source (`online` / `local`) | Default to local MMDB lookup |
+| `GEOIP_ONLINE_API_URL` | `https://api.ipinfo.es/ipinfo` | Online IP geolocation API endpoint (must be compatible with `ipinfo.my` response schema) | Set only when you deploy a compatible endpoint |
+| `FORCE_ACCESS_CONTROL_OFF` | `false` | Force disable access control (emergency recovery) | Temporary use only when token is lost |
+| `SHOWCASE_SITE_MODE` | `false` | Read-only showcase mode (blocks sensitive write operations) | Public demo sites only |
 
-### 高级调优变量（可选）
+### Advanced Tuning Variables (Optional)
 
-| 变量名 | 默认值 | 说明 |
+| Variable | Default | Description |
 | :-- | :-- | :-- |
-| `FLUSH_INTERVAL_MS` | `30000` | 采集缓冲区落库间隔 |
-| `FLUSH_MAX_BUFFER_SIZE` | `5000` | 采集缓冲区最大条目，达到即提前落库 |
-| `REALTIME_MAX_MINUTES` | `180` | 实时内存窗口大小（分钟） |
-| `REALTIME_RANGE_END_TOLERANCE_MS` | `120000` | 查询结束时间容差，缓解边界抖动 |
-| `SURGE_POLICY_SYNC_INTERVAL_MS` | `600000` | Surge 策略同步周期 |
-| `DB_RANGE_QUERY_CACHE_TTL_MS` | `8000` | 范围查询缓存 TTL |
-| `DB_HISTORICAL_QUERY_CACHE_TTL_MS` | `300000` | 历史查询缓存 TTL |
-| `DB_RANGE_QUERY_CACHE_MAX_ENTRIES` | `1024` | 范围查询缓存最大条目 |
-| `DB_RANGE_QUERY_CACHE_DISABLED` | 空 | 设为 `1` 可关闭范围查询缓存 |
-| `DEBUG_SURGE` | `false` | Surge 采集调试日志开关（`true` 开启） |
+| `FLUSH_INTERVAL_MS` | `30000` | Buffer flush interval for collector writes |
+| `FLUSH_MAX_BUFFER_SIZE` | `5000` | Max buffer entries before early flush |
+| `REALTIME_MAX_MINUTES` | `180` | Realtime in-memory window size (minutes) |
+| `REALTIME_RANGE_END_TOLERANCE_MS` | `120000` | End-time tolerance for range queries |
+| `SURGE_POLICY_SYNC_INTERVAL_MS` | `600000` | Surge policy sync interval |
+| `DB_RANGE_QUERY_CACHE_TTL_MS` | `8000` | Range-query cache TTL |
+| `DB_HISTORICAL_QUERY_CACHE_TTL_MS` | `300000` | Historical-query cache TTL |
+| `DB_RANGE_QUERY_CACHE_MAX_ENTRIES` | `1024` | Max range-query cache entries |
+| `DB_RANGE_QUERY_CACHE_DISABLED` | empty | Set `1` to disable range-query cache |
+| `DEBUG_SURGE` | `false` | Enable Surge collector debug logs (`true`) |
 
-### API / WS 地址解析优先级
+### API / WS Resolution Priority
 
-1. API 客户端基址：`runtime-config.API_URL` → `NEXT_PUBLIC_API_URL` → 默认同域 `/api`
-2. `/api` 的服务端转发目标：`API_URL`（默认 `http://localhost:3001`，在 Next.js rewrite 中生效）
-3. WS URL：`runtime-config.WS_URL` → `NEXT_PUBLIC_WS_URL` → 自动候选（`runtime-config.WS_PORT` 存在时优先直连端口，否则优先 `/_cm_ws`）
-4. WS 端口：`runtime-config.WS_PORT`（来自 `WS_EXTERNAL_PORT`）→ `NEXT_PUBLIC_WS_PORT` → `3002`
-5. 默认部署下无需手动配置 `NEXT_PUBLIC_WS_URL`；仅当你自定义 WS 路径/域名时再设置
+1. API client base: `runtime-config.API_URL` → `NEXT_PUBLIC_API_URL` → same-origin `/api`
+2. `/api` server-side rewrite target: `API_URL` (default `http://localhost:3001`, applied in Next.js rewrites)
+3. WS URL: `runtime-config.WS_URL` → `NEXT_PUBLIC_WS_URL` → auto candidates (when `runtime-config.WS_PORT` is set, direct port is preferred; otherwise `/_cm_ws` is tried first)
+4. WS port: `runtime-config.WS_PORT` (from `WS_EXTERNAL_PORT`) → `NEXT_PUBLIC_WS_PORT` → `3002`
+5. In normal deployments, `NEXT_PUBLIC_WS_URL` is usually unnecessary unless you use a custom WS path/domain
 
-### 线上环境建议（强烈）
+### Production Environment Baseline (Recommended)
 
 ```env
 NODE_ENV=production
 DB_PATH=/app/data/stats.db
-COOKIE_SECRET=<至少32字节随机字符串>
-# 可选：默认切换到本地 MMDB 查询
+COOKIE_SECRET=<at least 32-byte random string>
+# Optional: default to local MMDB lookup
 # GEOIP_LOOKUP_PROVIDER=local
-# 仅紧急恢复时临时开启，平时不要保留 true
+# Keep false in normal operation
 # FORCE_ACCESS_CONTROL_OFF=false
 ```
 
-可使用 `openssl rand -hex 32` 生成 `COOKIE_SECRET`。
+Use `openssl rand -hex 32` to generate `COOKIE_SECRET`.
 
-补充建议：
+Additional recommendations:
 
-1. 挂载持久化目录（如 `./data:/app/data`），避免数据库与自动生成密钥丢失。
-2. 如果外部直连 WS 且端口非 `3002`，务必同步设置 `WS_EXTERNAL_PORT`。
-3. 若源码部署修改了 API 端口或地址，记得同步设置 `API_URL`。
-4. 如需本地 MMDB 查询：挂载 `./geoip:/app/data/geoip:ro`，并在面板「设置 -> 偏好设置 -> IP 查询来源」切换为本地。
-5. MMDB 文件体积较大，项目镜像不内置数据库。请自行下载并放入 `./geoip`，文件名固定为：
-   `GeoLite2-City.mmdb`、`GeoLite2-ASN.mmdb`（必需），`GeoLite2-Country.mmdb`（可选）。
-   推荐来源：<https://github.com/P3TERX/GeoLite.mmdb>。
+1. Mount persistent storage (for example `./data:/app/data`) to avoid data and secret loss.
+2. If using direct WS access and external WS port is not `3002`, set `WS_EXTERNAL_PORT` accordingly.
+3. If API port/address changes in source deployment, update `API_URL` as well.
+4. For local MMDB lookup, mount `./geoip:/app/data/geoip:ro` and switch source in `Settings -> Preferences -> IP Lookup Source`.
+5. MMDB files are large and are not bundled in the image. Download and place them in `./geoip` with fixed names:
+   `GeoLite2-City.mmdb`, `GeoLite2-ASN.mmdb` (required), and `GeoLite2-Country.mmdb` (optional).
+   Recommended source: <https://github.com/P3TERX/GeoLite.mmdb>.
 
-> 进阶说明：Agent 模式的安装、参数、发布与兼容策略已迁移到 `docs/agent/*`，请以文档为准。
+> Advanced Agent details (install, config, release, compatibility) are maintained under `docs/agent/*`.
 
-## 🗄️ ClickHouse（可选）
+## 🗄️ ClickHouse (Optional)
 
-SQLite 是 Neko Master 的默认存储引擎，对大多数用户已完全够用。  
-如果你有以下需求，可以额外启用 ClickHouse：
+SQLite is Neko Master's default storage engine and works well for most users.
+Consider enabling ClickHouse if you need:
 
-- 数据量很大（域名 / IP 条目数十万以上）
-- 需要快速的长时间范围（≥ 7 天）聚合查询
-- 希望将历史统计数据与配置数据分层存储
+- Very large datasets (hundreds of thousands of domain/IP entries)
+- Fast aggregation queries over long time ranges (≥ 7 days)
+- Separation of historical stats from configuration/metadata storage
 
-> ClickHouse 完全可选。SQLite 作为配置和元数据存储，无论是否启用 ClickHouse 都不会被移除。
+> ClickHouse is entirely optional. SQLite remains as the configuration and metadata store regardless of whether ClickHouse is enabled.
 
-### 架构说明
+### Architecture Overview
 
-启用 ClickHouse 后，系统进入**双写模式**：
+When ClickHouse is enabled, the system enters **dual-write mode**:
 
 ```
 BatchBuffer.flush()
     │
-    ├──→ SQLite（配置 / 元数据，始终写入）
-    └──→ ClickHouse（统计流量数据，双写）
-           └── Buffer 表 → SummingMergeTree 异步合并
+    ├──→ SQLite (config / metadata, always written)
+    └──→ ClickHouse (stats traffic data, dual-write)
+           └── Buffer tables → SummingMergeTree async merge
 ```
 
-读取来源由 `STATS_QUERY_SOURCE` 控制，默认仍为 `sqlite`。
+Read source is controlled by `STATS_QUERY_SOURCE` (default: `sqlite`).
 
-### 启用 ClickHouse（Docker）
+### Enabling ClickHouse (Docker)
 
-#### 步骤一：启动 ClickHouse 容器
+#### Step 1: Start the ClickHouse container
 
-仓库内置的 `docker-compose.yml` 已包含 ClickHouse 服务，通过 `profiles: [clickhouse]` 隔离，默认不启动。
-直接在仓库根目录执行：
+The repository's built-in `docker-compose.yml` already includes a ClickHouse service, gated by
+`profiles: [clickhouse]` so it does not start by default. From the repository root, run:
 
 ```bash
 docker compose --profile clickhouse up -d
 ```
 
-> ClickHouse 数据持久化到 `./data/clickhouse`，与主应用数据分目录存储。
+> ClickHouse data is persisted to `./data/clickhouse`, separate from the main app data directory.
 
-如果你使用的是**自定义 `docker-compose.yml`**（如上方场景 A/B），需手动添加 ClickHouse 服务块：
+If you use a **custom `docker-compose.yml`** (such as Scenario A/B above), add the ClickHouse
+service block manually:
 
 ```yaml
 services:
   neko-master:
-    # ... 你的现有配置 ...
+    # ... your existing config ...
     environment:
-      # 在现有 environment 中追加：
+      # append to existing environment section:
       - CH_ENABLED=${CH_ENABLED:-0}
       - CH_HOST=${CH_HOST:-clickhouse}
       - CH_PORT=${CH_PORT:-8123}
@@ -549,21 +559,21 @@ networks:
     driver: bridge
 ```
 
-#### 步骤二：配置环境变量
+#### Step 2: Configure environment variables
 
-在 `.env` 中添加（与 `docker-compose.yml` 同目录）：
+Add to your `.env` (same directory as `docker-compose.yml`):
 
 ```env
-# 开启 ClickHouse 连接
+# Enable ClickHouse connection
 CH_ENABLED=1
 
-# 开启双写
+# Enable dual-write
 CH_WRITE_ENABLED=1
 
-# 读取来源：sqlite（默认）/ auto（自动选择）/ clickhouse（强制）
+# Read source: sqlite (default) / auto (smart routing) / clickhouse (force)
 STATS_QUERY_SOURCE=auto
 
-# ClickHouse 连接信息（使用 docker-compose.yml 默认值时，以下无需修改）
+# ClickHouse connection (defaults match docker-compose.yml, no change needed)
 CH_HOST=clickhouse
 CH_PORT=8123
 CH_DATABASE=neko_master
@@ -571,87 +581,87 @@ CH_USER=neko
 CH_PASSWORD=neko_master
 ```
 
-重启：
+Restart:
 
 ```bash
 docker compose --profile clickhouse up -d
 ```
 
-### ClickHouse 环境变量说明
+### ClickHouse Environment Variables
 
-| 变量名 | 默认值 | 说明 |
+| Variable | Default | Description |
 | :-- | :-- | :-- |
-| `CH_ENABLED` | `0` | 是否启用 ClickHouse 连接（`1` 开启） |
-| `CH_WRITE_ENABLED` | `0` | 是否开启双写（须先开 `CH_ENABLED`） |
-| `CH_ONLY_MODE` | `0` | CH 健康时跳过 SQLite 统计写入（纯 CH 模式） |
-| `CH_HOST` | `clickhouse` | ClickHouse 主机地址 |
-| `CH_PORT` | `8123` | ClickHouse HTTP 端口 |
-| `CH_DATABASE` | `neko_master` | 数据库名称 |
-| `CH_USER` | `neko` | 用户名 |
-| `CH_PASSWORD` | `neko_master` | 密码 |
-| `CH_SECURE` | `0` | 是否使用 HTTPS 连接 |
-| `CH_REQUIRED` | `0` | CH 不可用时拒绝启动（`1` 开启） |
-| `CH_AUTO_CREATE_TABLES` | `1` | 首次启动时自动建表 |
-| `CH_WRITE_MAX_PENDING_BATCHES` | `200` | 最大写入积压批次数 |
-| `CH_UNHEALTHY_THRESHOLD` | `5` | 连续失败次数超过此值后标记为不健康，自动回退 SQLite |
-| `STATS_QUERY_SOURCE` | `sqlite` | 读取来源：`sqlite` / `auto` / `clickhouse` |
-| `CH_COMPARE_ENABLED` | `0` | 开启 SQLite ↔ ClickHouse 数据对账 |
-| `CH_EXTERNAL_HTTP_PORT` | `8123` | ClickHouse HTTP 外部端口（Compose 映射） |
-| `CH_EXTERNAL_NATIVE_PORT` | `9000` | ClickHouse Native 外部端口（Compose 映射） |
+| `CH_ENABLED` | `0` | Enable ClickHouse connection (`1` to enable) |
+| `CH_WRITE_ENABLED` | `0` | Enable dual-write (requires `CH_ENABLED=1`) |
+| `CH_ONLY_MODE` | `0` | When CH is healthy, skip SQLite stats writes (CH-only mode) |
+| `CH_HOST` | `clickhouse` | ClickHouse host address |
+| `CH_PORT` | `8123` | ClickHouse HTTP port |
+| `CH_DATABASE` | `neko_master` | Database name |
+| `CH_USER` | `neko` | Username |
+| `CH_PASSWORD` | `neko_master` | Password |
+| `CH_SECURE` | `0` | Use HTTPS connection |
+| `CH_REQUIRED` | `0` | Refuse to start if CH is unavailable |
+| `CH_AUTO_CREATE_TABLES` | `1` | Auto-create tables on first start |
+| `CH_WRITE_MAX_PENDING_BATCHES` | `200` | Max pending write batches |
+| `CH_UNHEALTHY_THRESHOLD` | `5` | Consecutive failures before marking unhealthy (auto-fallback to SQLite) |
+| `STATS_QUERY_SOURCE` | `sqlite` | Read source: `sqlite` / `auto` / `clickhouse` |
+| `CH_COMPARE_ENABLED` | `0` | Enable SQLite ↔ ClickHouse consistency check |
+| `CH_EXTERNAL_HTTP_PORT` | `8123` | ClickHouse HTTP external port (Compose mapping) |
+| `CH_EXTERNAL_NATIVE_PORT` | `9000` | ClickHouse Native external port (Compose mapping) |
 
-> **健康回退机制**：ClickHouse 连续写入失败超过 `CH_UNHEALTHY_THRESHOLD` 次后，系统自动标记为不健康，SQLite 写入恢复（即使开启了 `CH_ONLY_MODE`）。ClickHouse 恢复正常后自动重新标记为健康。
+> **Health & Fallback**: After `CH_UNHEALTHY_THRESHOLD` consecutive write failures, the system automatically marks ClickHouse as unhealthy and resumes SQLite writes—even when `CH_ONLY_MODE=1`. Once ClickHouse recovers, it is re-marked healthy and logged.
 
-### 老用户迁移指引
+### Migration Guide for Existing Users
 
-> 从纯 SQLite 版本升级时，**你的数据不会丢失**。  
-> SQLite 文件（`./data/stats.db`）完整保留，以下是推荐的渐进迁移路径：
+> Upgrading from a SQLite-only version? **Your data is safe.**
+> The SQLite file (`./data/stats.db`) is fully preserved. Here is the recommended gradual migration path:
 
-#### 第一阶段：双写（观察期，推荐起点）
+#### Phase 1: Dual-write (observation period, recommended starting point)
 
 ```env
 CH_ENABLED=1
 CH_WRITE_ENABLED=1
-STATS_QUERY_SOURCE=sqlite   # 继续读 SQLite，CH 在后台积累数据
+STATS_QUERY_SOURCE=sqlite   # Keep reading from SQLite while CH accumulates data
 ```
 
-启动并观察 `[ClickHouse Writer]` 日志确认写入正常。
+Start and watch `[ClickHouse Writer]` logs to confirm successful writes.
 
-#### 第二阶段：切换读取来源
+#### Phase 2: Switch read source
 
 ```env
-STATS_QUERY_SOURCE=auto     # 自动选择：最近数据走 CH，历史走 SQLite
-# 或
-STATS_QUERY_SOURCE=clickhouse  # 强制读 CH
+STATS_QUERY_SOURCE=auto        # Smart routing: recent data from CH, historical from SQLite
+# or
+STATS_QUERY_SOURCE=clickhouse  # Force all reads to ClickHouse
 ```
 
-#### 第三阶段（可选）：迁移历史数据
+#### Phase 3 (optional): Migrate historical data
 
-如需将 SQLite 历史统计数据搬入 ClickHouse：
+To move historical SQLite stats into ClickHouse:
 
 ```bash
-# 标准迁移（清空 CH 后重新导入，附带对账验证）
+# Standard migration (truncate CH then re-import, with consistency check)
 ./scripts/ch-migrate-docker.sh
 
-# 追加模式（保留 CH 现有数据，增量导入）
+# Append mode (keep existing CH data, incremental import)
 ./scripts/ch-migrate-docker.sh --append
 
-# 指定时间窗口
+# Specific time window
 ./scripts/ch-migrate-docker.sh --from 2026-02-01T00:00:00Z --to 2026-02-20T00:00:00Z
 ```
 
-#### 第四阶段（可选）：纯 ClickHouse 模式
+#### Phase 4 (optional): CH-only mode
 
-当 ClickHouse 稳定运行后，可停止 SQLite 统计写入：
+Once ClickHouse is running stably, stop SQLite stats writes:
 
 ```env
 CH_ONLY_MODE=1
 ```
 
-> 即使在 `CH_ONLY_MODE=1` 下，若 ClickHouse 不健康，系统会自动回退到 SQLite 写入，数据不会丢失。
+> Even with `CH_ONLY_MODE=1`, if ClickHouse becomes unhealthy the system automatically falls back to SQLite writes—no data loss.
 
-### 回退到纯 SQLite
+### Reverting to SQLite-only
 
-随时可以完全回退：
+You can always roll back completely:
 
 ```env
 CH_ENABLED=0
@@ -660,15 +670,16 @@ CH_ONLY_MODE=0
 STATS_QUERY_SOURCE=sqlite
 ```
 
-重启后恢复纯 SQLite 模式，历史数据完整保留。
+Restart and everything returns to pure SQLite mode. Historical data remains intact.
 
 ---
 
-## 🌐 反向代理与 Tunnel
+## 🌐 Reverse Proxy & Tunnel
 
-推荐将 Web 页面与 WS 都放在同一个域名下，通过不同路径转发：`/` → `3000`，`/_cm_ws` → `3002`。
+Recommended approach: keep Web and WS under the same domain, with path routing:
+`/` → `3000`, `/_cm_ws` → `3002`.
 
-### Nginx 标准示例（推荐）
+### Nginx Standard Example
 
 ```nginx
 server {
@@ -699,17 +710,16 @@ server {
 }
 ```
 
-配套 Docker 环境变量：
+Optional env override:
 
 ```env
-# 默认无需配置（已默认 /_cm_ws）
-# 如需自定义可设置：
+# Not required by default (already /_cm_ws)
 # NEXT_PUBLIC_WS_URL=/custom_ws
 ```
 
-### Cloudflare Tunnel 标准示例
+### Cloudflare Tunnel Standard Example
 
-`~/.cloudflared/config.yml`：
+`~/.cloudflared/config.yml`:
 
 ```yaml
 tunnel: <your-tunnel-name-or-id>
@@ -725,103 +735,102 @@ ingress:
   - service: http_status:404
 ```
 
-启动：
+Run:
 
 ```bash
 cloudflared tunnel --config ~/.cloudflared/config.yml run <your-tunnel-name-or-id>
 ```
 
-如果使用 Zero Trust Dashboard 托管路由（token 方式），请在 Dashboard 中配置同样两条规则，并保证 `/_cm_ws*` 在 `/*` 之前。
+For Zero Trust dashboard-managed routes (token mode), configure the same two routes and keep `/_cm_ws*` above `/*`.
 
-### 关键注意事项
+### Key Notes
 
-1. 不要把 WS 路径写成 `ws`（无前导 `/`），容易误匹配静态资源，导致 `/_next/static/...` 返回 `426 Upgrade Required`
-2. WS 路由必须高于 catch-all 路由（`/*`）
-3. 默认不需要配置 `NEXT_PUBLIC_WS_URL`；如你自定义了该变量，修改后需重启前端进程/容器
-4. 容器仅映射 `3000` 也能正常用，但会自动回退到 HTTP 轮询（约 5 秒级），实时性弱于 WS
-5. `beacon.min.js` 等第三方脚本失败通常不影响主数据链路（API/WS）
-6. 默认不需要单独配置 `/api` 反代：前端会同域访问 `/api` 并由应用内部转发到 `3001`
+1. Do not use `ws` (without leading slash) as WS path; it can overmatch and cause `/_next/static/...` → `426 Upgrade Required`
+2. WS route must be above catch-all `/*`
+3. `NEXT_PUBLIC_WS_URL` is optional by default; if customized, restart frontend/container after changes
+4. Mapping only `3000` still works, but falls back to HTTP polling (~5s), with less real-time responsiveness
+5. `beacon.min.js` failures (Cloudflare analytics script) are typically unrelated to app API/WS data flow
+6. No extra `/api` reverse-proxy rule is required in most setups; frontend uses same-origin `/api` and app handles internal forwarding to `3001`
 
-> 说明：`/_next/static/... 426 Upgrade Required` 在 **反向代理 / Tunnel 配置错误** 时比较常见；本地直连（不经反代）通常不会遇到。
+> Note: `/_next/static/... 426 Upgrade Required` is common in **misconfigured reverse proxy / tunnel** setups; it is uncommon in direct local access without a proxy.
 
-### 多架构支持
+### Multi-Architecture Support
 
-Docker 镜像同时支持 `linux/amd64` 和 `linux/arm64`。
+Docker images support both `linux/amd64` and `linux/arm64`.
 
-### 数据持久化
+### Data Persistence
 
-数据默认存储在容器内的 `/app/data` 目录，建议映射到宿主机：
+Data is stored in `/app/data` inside the container. Mount it to host to prevent data loss:
 
 ```yaml
 volumes:
   - ./data:/app/data
 ```
 
-### 更新到最新版本
+### Update to Latest
 
 ```bash
-# 拉取最新镜像并重新启动
+# Pull the latest image and restart
 docker compose pull
 docker compose up -d
 ```
 
-## 🔐 认证与安全
+## 🔐 Authentication & Security
 
-Neko Master 支持访问鉴权功能，保护你的面板数据安全。
+Neko Master supports access authentication to protect dashboard data.
 
-### 生产环境安全基线
+### Production Security Baseline
 
-1. 固定配置 `COOKIE_SECRET`（否则重启后会话可能失效）。
-2. 不要长期保留 `FORCE_ACCESS_CONTROL_OFF=true`。
-3. `SHOWCASE_SITE_MODE=true` 仅用于演示站点（会限制写操作）。
+1. Set a fixed `COOKIE_SECRET` (otherwise sessions may be invalidated after restart).
+2. Do not keep `FORCE_ACCESS_CONTROL_OFF=true` enabled in normal operation.
+3. Use `SHOWCASE_SITE_MODE=true` only for public demo environments (write operations are restricted).
 
-示例：
+Example:
 
 ```env
-COOKIE_SECRET=<至少32字节随机字符串>
+COOKIE_SECRET=<at least 32-byte random string>
 # FORCE_ACCESS_CONTROL_OFF=false
 # SHOWCASE_SITE_MODE=false
 ```
 
-### 开启/关闭鉴权
+### Enable / Disable Authentication
 
-1. 进入面板，点击左侧边栏底部的「设置」。
-2. 切换到「安全」标签页。
-3. 在此页面可以开启/关闭访问控制，并设置访问令牌（Token）。
+1. Open dashboard and click "Settings" in the lower-left sidebar.
+2. Go to the "Security" tab.
+3. Enable/disable access control and set your token.
 
-### 忘记密码（重置访问令牌）
+### Forgot Token (Emergency Reset)
 
-如果你忘记了访问令牌，可以通过环境变量 `FORCE_ACCESS_CONTROL_OFF` 强制进入**紧急访问模式**。
+If you forgot the token, temporarily set `FORCE_ACCESS_CONTROL_OFF=true` to enter emergency mode.
 
-#### Docker Compose 用户
+#### Docker Compose
 
-1. 修改 `docker-compose.yml`，在 `environment` 下添加：
+1. Add to `docker-compose.yml`:
 
    ```yaml
    environment:
      - FORCE_ACCESS_CONTROL_OFF=true
    ```
 
-2. 重启容器：
+2. Restart:
 
    ```bash
    docker compose up -d
    ```
 
-3. 刷新页面，你将看到“紧急访问模式”警告。此时无需旧密码即可在「设置 -> 安全」中重置新令牌。
+3. Open dashboard and reset token in "Settings -> Security".
+4. Remove this env var immediately after reset, then restart again.
 
-4. **重要**：重置完成后，务必删除该环境变量并再次重启容器，以恢复访问控制。
+#### Docker CLI
 
-#### Docker 命令行用户
-
-1. 停止并删除旧容器（数据在挂载卷中，不会丢失）：
+1. Stop and remove container:
 
    ```bash
    docker stop neko-master
    docker rm neko-master
    ```
 
-2. 添加 `-e FORCE_ACCESS_CONTROL_OFF=true` 参数重新启动：
+2. Re-run with emergency flag:
 
    ```bash
    docker run -d \
@@ -832,19 +841,20 @@ COOKIE_SECRET=<至少32字节随机字符串>
      foru17/neko-master:latest
    ```
 
-3. 重置密码后，再次停止容器，去除该参数并重启，恢复正常保护模式。
+3. Reset token, then remove this flag and restart normally.
 
 
-## ❓ 常见问题
+## ❓ FAQ
 
-### Q: 只映射 `3000:3000` 可以正常使用吗？
+### Q: Can I run normally with only `3000:3000` exposed?
 
-**A:** 可以。页面功能仍可用，未打通 WS 时会自动回退为 HTTP 轮询。  
-如需完整实时能力，请按上文配置反代路径（如 `/_cm_ws`）并转发到 `3002`。
+**A:** Yes. Core features still work.
+If WS is not routed, the app automatically falls back to HTTP polling.
+For full realtime experience, route `/_cm_ws` to `3002`.
 
-### Q: 端口冲突或改端口后无法访问怎么办？
+### Q: Port conflict or inaccessible after port changes?
 
-**A:** 先在项目根目录创建 `.env`（与 `docker-compose.yml` 同目录）：
+**A:** Create/update `.env` (same directory as `docker-compose.yml`):
 
 ```env
 WEB_EXTERNAL_PORT=8080
@@ -852,50 +862,50 @@ API_EXTERNAL_PORT=8081
 WS_EXTERNAL_PORT=8082
 ```
 
-然后重启并用新端口访问：
+Then restart:
 
 ```bash
 docker compose down
 docker compose up -d
 ```
 
-### Q: 为什么重启后登录状态会失效？
+### Q: Why does login/session disappear after restart?
 
-**A:** 通常是 `COOKIE_SECRET` 未固定或数据目录未持久化导致。建议：
+**A:** Usually because `COOKIE_SECRET` is not fixed or data directory is not persisted.
 
-1. 设置固定 `COOKIE_SECRET`
-2. 挂载 `./data:/app/data`
+1. Set a fixed `COOKIE_SECRET`
+2. Mount `./data:/app/data`
 
-### Q: 本地 MMDB 查询要准备哪些文件？
+### Q: Which files are required for local MMDB lookup?
 
-**A:** 建议在项目目录创建 `./geoip`（可与 `docker-compose.yml` 同级），然后放置以下文件：
+**A:** Create `./geoip` in your project directory (same level as `docker-compose.yml` is recommended), then place:
 
-1. `GeoLite2-City.mmdb`（必需）
-2. `GeoLite2-ASN.mmdb`（必需）
-3. `GeoLite2-Country.mmdb`（可选）
+1. `GeoLite2-City.mmdb` (required)
+2. `GeoLite2-ASN.mmdb` (required)
+3. `GeoLite2-Country.mmdb` (optional)
 
-推荐下载源：<https://github.com/P3TERX/GeoLite.mmdb>。  
-容器内固定读取目录是 `/app/data/geoip`，因此建议保持挂载：
-`./geoip:/app/data/geoip:ro`。后续你只需替换宿主机 `./geoip` 里的文件即可完成更新。
+Recommended source: <https://github.com/P3TERX/GeoLite.mmdb>.
+Inside the container, the fixed lookup path is `/app/data/geoip`, so keep:
+`./geoip:/app/data/geoip:ro`. To update later, just replace files in host `./geoip`.
 
-### Q: 连接 OpenClash / 网关失败？
+### Q: Failed to connect OpenClash / gateway?
 
-**A:** 检查以下几点：
+**A:** Check:
 
-1. OpenClash 的「外部控制」是否已开启
-2. OpenClash 地址是否正确（格式：`IP:端口`）
-3. 如果配置了 Secret，Token 是否填写正确
-4. 容器是否能访问到 OpenClash 所在网络
+1. External control is enabled on gateway side
+2. Host/port is correct
+3. Token/Secret is correct (if configured)
+4. Container network can reach gateway
 
-### Q: 如何备份和恢复数据？
+### Q: How to backup and restore data?
 
-**A:** 数据默认在 `./data/stats.db`。先备份：
+**A:** Backup first:
 
 ```bash
 cp -r ./data ./data-backup-$(date +%Y%m%d)
 ```
 
-恢复时停止服务、覆盖数据目录再启动：
+Restore:
 
 ```bash
 docker compose down
@@ -903,84 +913,97 @@ cp -r ./data-backup-YYYYMMDD/. ./data/
 docker compose up -d
 ```
 
-## 🏗️ 架构文档指引
+## 🏗️ Architecture Guide
 
-如果你想快速理解系统设计与实现深度，建议按下面顺序阅读：
+If you want to quickly understand the system design depth, read in this order:
 
-1. **整体架构图**：端到端分层与模块职责 → [docs/architecture.md](./docs/architecture.md)
-2. **数据流详解**：Clash / Surge 两条采集链路与聚合过程
-3. **数据模型与存储**：SQLite 表结构、ClickHouse Buffer 表、保留策略
-4. **实时通道设计**：`RealtimeStore` 合并策略与 WS 推送机制
-5. **ClickHouse 模块**：双写架构、健康回退、读取路由
+1. **System Architecture Diagram**: end-to-end layering and module responsibilities → [docs/architecture.en.md](./docs/architecture.en.md)
+2. **Data Flow**: Clash / Surge collection pipelines and aggregation
+3. **Data Model & Storage**: SQLite schema, ClickHouse Buffer tables, retention policy
+4. **Realtime Channel Design**: `RealtimeStore` merge strategy and WS push
+5. **ClickHouse Module**: dual-write architecture, health fallback, read routing
 
-完整文档索引：[docs/README.md](./docs/README.md)
+Full documentation index: [docs/README.md](./docs/README.md)
 
-> 该文档覆盖采集、聚合、缓存、实时推送与多后端管理的核心设计。
+> This documentation covers the core design of collection, aggregation, caching, realtime push, and multi-backend management.
 
-## 🤝 反馈与 Issue
+## 🤝 Feedback & Issues
 
-本项目已启用 GitHub Issue 模板（Bug / Feature / Support）。
+This project uses GitHub Issue Templates (Bug / Feature / Support).
 
-建议提单时至少包含：
+Please include at least:
 
-1. 部署方式（Compose / Docker Run / 源码）
-2. 版本信息（镜像 tag 或 commit）
-3. 关键环境变量（请脱敏，如 `COOKIE_SECRET=***`）
-4. 复现步骤与预期/实际结果
-5. 关键日志（`docker logs`、浏览器 Console、网络报错）
+1. Deployment method (Compose / Docker Run / Source)
+2. Version info (image tag or commit)
+3. Key env vars (masked, e.g. `COOKIE_SECRET=***`)
+4. Reproduction steps and expected vs actual behavior
+5. Key logs (`docker logs`, browser console, network errors)
 
-## 📁 项目结构
+## 📁 Project Structure
 
 ```
 neko-master/
-├── docker-compose.yml      # Docker Compose 配置
-├── Dockerfile              # Docker 镜像构建
-├── setup.sh                # 一键配置脚本
-├── docker-start.sh         # Docker 容器启动脚本
-├── start.sh                # 源码开发启动脚本
-├── docs/                   # 文档（见 docs/README.md）
-│   ├── README.md           # 文档总索引（中文）
-│   ├── README.en.md        # 文档总索引（英文）
-│   ├── architecture.md     # 系统架构（中文）
-│   ├── architecture.en.md  # 系统架构（英文）
+├── docker-compose.yml      # Docker Compose config
+├── Dockerfile              # Docker image build
+├── setup.sh                # One-click setup script
+├── docker-start.sh         # Docker container startup script
+├── start.sh                # Source code dev startup script
+├── docs/                   # Documentation (see docs/README.md)
+│   ├── README.md           # Documentation index (English default)
+│   ├── README.zh.md        # Documentation index (Chinese)
+│   ├── README.en.md        # Documentation index (English mirror)
+│   ├── architecture.md     # System architecture (Chinese)
+│   ├── architecture.en.md  # System architecture (English)
 │   ├── release-checklist.md
-│   ├── agent/              # Agent 模式文档（中英文双语）
+│   ├── agent/              # Agent docs (bilingual)
 │   │   ├── overview.md / overview.en.md
 │   │   ├── quick-start.md / quick-start.en.md
 │   │   ├── install.md / install.en.md
 │   │   ├── config.md / config.en.md
 │   │   ├── release.md / release.en.md
 │   │   └── troubleshooting.md / troubleshooting.en.md
-│   ├── research/           # 研究报告
-│   └── dev/                # 内部开发文档
-├── assets/                 # 预览图和图标
+│   ├── research/           # Research reports
+│   └── dev/                # Internal development docs
+├── assets/                 # Screenshots and icons
 ├── apps/
-│   ├── collector/          # 数据收集服务（Node.js + WebSocket）
-│   ├── agent/              # Agent 守护进程（Go）
-│   └── web/                # Next.js 前端应用
+│   ├── collector/          # Data collection service (Node.js + WebSocket)
+│   ├── agent/              # Agent daemon (Go)
+│   └── web/                # Next.js frontend app
 └── packages/
-    └── shared/             # 共享类型定义和工具
+    └── shared/             # Shared types and utilities
 ```
 
-## 🛠️ 技术栈
+## 🛠️ Tech Stack
 
-- **前端**: Next.js 16 + React 19 + TypeScript + Tailwind CSS
-- **UI 组件**: shadcn/ui
-- **数据收集**: Node.js + Fastify + WebSocket + SQLite（+ ClickHouse 可选）
-- **可视化**: Recharts + D3.js
-- **国际化**: next-intl（中/英）
-- **部署**: Docker + Docker Compose
+- **Frontend**: [Next.js 16](https://nextjs.org/) + [React 19](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/)
+- **Charts**: [Recharts](https://recharts.org/)
+- **i18n**: [next-intl](https://next-intl-docs.vercel.app/)
+- **Backend**: [Node.js](https://nodejs.org/) + [Fastify](https://www.fastify.io/) + WebSocket
+- **Database**: [SQLite](https://www.sqlite.org/) ([better-sqlite3](https://github.com/WiseLibs/better-sqlite3)) + [ClickHouse](https://clickhouse.com/) (optional)
+- **Build**: [pnpm](https://pnpm.io/) + [Turborepo](https://turbo.build/)
 
-## 📄 许可证
+## 🤝 Contributing
 
-MIT License © 2024 [foru17](https://github.com/foru17)
+Contributions are welcome!
 
-## Star History
+- 🐛 [Submit Bug](https://github.com/foru17/neko-master/issues/new)
+- 💡 [Request Feature](https://github.com/foru17/neko-master/issues/new)
+- 🔧 [Contribute Code](https://github.com/foru17/neko-master/pulls)
+
+## 📄 License
+
+[MIT](LICENSE) © [foru17](https://github.com/foru17)
+
+---
+
+## ⭐ Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=foru17/neko-master&type=date&legend=top-left)](https://www.star-history.com/#foru17/neko-master&type=date&legend=top-left)
 
 ---
 
 <p align="center">
-  如果这个项目对你有帮助，请给个 ⭐ Star 支持一下！
+  <sub>Made with ❤️ by <a href="https://github.com/foru17">@foru17</a></sub><br>
+  <sub>If this project helps you, please consider giving it a ⭐</sub>
 </p>

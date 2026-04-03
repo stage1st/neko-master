@@ -1,15 +1,15 @@
 # Documentation Index
 
-[中文](./README.md) | **English**
+[中文](./README.zh.md) | **English**
 
 ## Architecture
 
 - [System Architecture](./architecture.en.md) — end-to-end architecture, data flow, module design, ClickHouse integration
-- [Release Checklist](./release-checklist.md) — version release steps
+- [Release Checklist (Chinese)](./release-checklist.md) — version release steps
 
 ## Agent
 
-- [Documentation Index](./agent/README.en.md) — Agent docs navigation
+- [Documentation Index](./agent/README.md) — Agent docs navigation
 - [Overview](./agent/overview.en.md) — how it works, Direct vs Agent comparison, security model
 - [Quick Start](./agent/quick-start.en.md) — end-to-end setup from UI to running agent
 - [Install Guide](./agent/install.en.md) — script install, systemd / launchd / OpenWrt autostart
@@ -25,6 +25,7 @@
 
 ## Internal Development Docs
 
+> Some operational and internal development docs are currently Chinese-only.
 > Internal analysis and planning documents from development. Not intended for end users.
 
 - [ClickHouse Dataflow Analysis](./dev/clickhouse-dataflow-analysis.md)

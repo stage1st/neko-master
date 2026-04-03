@@ -1,6 +1,6 @@
 # Agent Documentation
 
-[中文](./README.md) | **English**
+[中文](./README.zh.md) | **English**
 
 Use this guide set when deploying Neko Master in a centralized mode with remote agents.
 

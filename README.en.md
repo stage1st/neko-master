@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <b>English</b> | <a href="./README.md">中文</a>
+  <b>English</b> | <a href="./README.zh.md">中文</a>
 </p>
 
 <p align="center">
@@ -923,7 +923,7 @@ If you want to quickly understand the system design depth, read in this order:
 4. **Realtime Channel Design**: `RealtimeStore` merge strategy and WS push
 5. **ClickHouse Module**: dual-write architecture, health fallback, read routing
 
-Full documentation index: [docs/README.en.md](./docs/README.en.md)
+Full documentation index: [docs/README.md](./docs/README.md)
 
 > This documentation covers the core design of collection, aggregation, caching, realtime push, and multi-backend management.
 
@@ -948,9 +948,10 @@ neko-master/
 ├── setup.sh                # One-click setup script
 ├── docker-start.sh         # Docker container startup script
 ├── start.sh                # Source code dev startup script
-├── docs/                   # Documentation (see docs/README.en.md)
-│   ├── README.md           # Documentation index (Chinese)
-│   ├── README.en.md        # Documentation index (English)
+├── docs/                   # Documentation (see docs/README.md)
+│   ├── README.md           # Documentation index (English default)
+│   ├── README.zh.md        # Documentation index (Chinese)
+│   ├── README.en.md        # Documentation index (English mirror)
 │   ├── architecture.md     # System architecture (Chinese)
 │   ├── architecture.en.md  # System architecture (English)
 │   ├── release-checklist.md
