@@ -28,6 +28,23 @@ curl -fsSL https://raw.githubusercontent.com/foru17/neko-master/main/apps/agent/
         sh
 ```
 
+### PassWall (Mihomo) gateway
+
+If your OpenWrt router uses PassWall but the runtime kernel is Mihomo/Clash with `external-controller` enabled, keep using the `Clash / Mihomo` type:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/foru17/neko-master/main/apps/agent/install.sh \
+  | env NEKO_SERVER='http://your-panel:3000' \
+        NEKO_BACKEND_ID='3' \
+        NEKO_BACKEND_TOKEN='ag_zzz' \
+        NEKO_GATEWAY_TYPE='clash' \
+        NEKO_GATEWAY_URL='http://192.168.1.1:9090' \
+        NEKO_GATEWAY_TOKEN='mihomo-secret' \
+        sh
+```
+
+If PassWall is running `sing-box` or `xray-core`, the current version returns an explicit incompatibility error. Switch to Mihomo or add a dedicated adapter later.
+
 ### Surge gateway
 
 ```bash

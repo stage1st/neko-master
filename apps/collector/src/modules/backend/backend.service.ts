@@ -44,6 +44,13 @@ function generateAgentBackendToken(): string {
   return `ag_${randomBytes(24).toString('base64url')}`;
 }
 
+type ClashProbeStatus = 'ok' | 'auth' | 'network' | 'incompatible';
+
+interface ClashProbeResult {
+  status: ClashProbeStatus;
+  message?: string;
+}
+
 export class BackendService {
   private healthStatus = new Map<number, BackendHealthInfo>();
   private healthCheckInterval: NodeJS.Timeout | null = null;
@@ -585,16 +592,18 @@ export class BackendService {
    */
   private async testClashConnection(url: string, token?: string): Promise<TestConnectionResult> {
     try {
-      const wsUrl = url.replace('http://', 'ws://').replace('https://', 'wss://');
-      const fullUrl = wsUrl.includes('/connections') ? wsUrl : `${wsUrl}/connections`;
-      
-      const headers: Record<string, string> = {};
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
+      const probe = await this.probeClashHttpApi(url, token);
+      if (probe.status !== 'ok') {
+        return {
+          success: false,
+          message: probe.message || 'Connection failed',
+        };
       }
-      
+
+      const fullUrl = this.normalizeClashConnectionsWsUrl(url);
+      const headers = this.buildClashHeaders(token);
       const WebSocket = (await import('ws')).default;
-      
+
       return new Promise((resolve) => {
         const ws = new WebSocket(fullUrl, { headers, timeout: 5000 });
         let settled = false;
@@ -602,7 +611,10 @@ export class BackendService {
           if (settled) return;
           settled = true;
           ws.terminate();
-          resolve({ success: false, message: 'Connection timeout' });
+          resolve({
+            success: false,
+            message: 'Clash API timeout. Verify the gateway address and confirm External Controller is enabled.',
+          });
         }, 5000);
 
         const finish = (result: TestConnectionResult): void => {
@@ -614,17 +626,16 @@ export class BackendService {
 
         ws.on('open', () => {
           ws.close();
-          finish({ success: true, message: 'Connection successful' });
+          finish({ success: true, message: 'Connected to Clash-compatible API (Mihomo / PassWall-Mihomo supported)' });
         });
 
         ws.on('error', (error: unknown) => {
-          const message = error instanceof Error ? error.message : 'Connection failed';
-          finish({ success: false, message });
+          finish({ success: false, message: this.mapClashWebSocketError(error) });
         });
 
         ws.on('close', (code: number) => {
           if (code !== 1000 && code !== 1005) {
-            finish({ success: false, message: `Connection closed with code ${code}` });
+            finish({ success: false, message: this.mapClashCloseCode(code) });
           }
         });
       });
@@ -632,6 +643,114 @@ export class BackendService {
       const message = error instanceof Error ? error.message : 'Connection failed';
       return { success: false, message };
     }
+  }
+
+  private buildClashHeaders(token?: string): Record<string, string> {
+    const headers: Record<string, string> = {};
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+    return headers;
+  }
+
+  private normalizeClashBaseUrl(url: string): string {
+    const trimmed = url.trim().replace(/\/$/, '');
+    return trimmed.replace(/\/connections$/, '');
+  }
+
+  private normalizeClashConnectionsWsUrl(url: string): string {
+    const wsUrl = this.normalizeClashBaseUrl(url)
+      .replace('http://', 'ws://')
+      .replace('https://', 'wss://');
+    return `${wsUrl}/connections`;
+  }
+
+  private async probeClashHttpApi(url: string, token?: string): Promise<ClashProbeResult> {
+    const testUrl = `${this.normalizeClashBaseUrl(url)}/proxies`;
+
+    try {
+      const response = await fetch(testUrl, {
+        headers: {
+          Accept: 'application/json',
+          ...this.buildClashHeaders(token),
+        },
+        signal: AbortSignal.timeout(5000),
+      });
+
+      if (response.status === 401 || response.status === 403) {
+        return {
+          status: 'auth',
+          message: 'Authentication failed. Check the Clash/Mihomo secret or PassWall external-controller secret.',
+        };
+      }
+
+      if (!response.ok) {
+        if ([404, 405, 501].includes(response.status)) {
+          return {
+            status: 'incompatible',
+            message: 'This endpoint is not a Clash-compatible API. PassWall only works here with Mihomo and external-controller enabled; sing-box/xray is not supported.',
+          };
+        }
+
+        return {
+          status: 'network',
+          message: `Gateway responded with HTTP ${response.status}. Verify the address/port and confirm the Clash-compatible API is reachable.`,
+        };
+      }
+
+      const contentType = response.headers.get('content-type') || '';
+      if (!contentType.includes('json')) {
+        return {
+          status: 'incompatible',
+          message: 'Gateway response is not Clash-compatible JSON. PassWall requires Mihomo external-controller; sing-box/xray is not supported.',
+        };
+      }
+
+      const payload = await response.json() as Record<string, unknown>;
+      if (!payload || typeof payload !== 'object' || !('proxies' in payload)) {
+        return {
+          status: 'incompatible',
+          message: 'Gateway did not return Clash-compatible proxy data. PassWall requires Mihomo external-controller; sing-box/xray is not supported.',
+        };
+      }
+
+      return { status: 'ok' };
+    } catch (error: unknown) {
+      if (error instanceof Error && error.name === 'AbortError') {
+        return {
+          status: 'network',
+          message: 'Connection timeout. Verify the gateway address/port and confirm External Controller is enabled.',
+        };
+      }
+
+      return {
+        status: 'network',
+        message: error instanceof Error ? error.message : 'Connection failed',
+      };
+    }
+  }
+
+  private mapClashWebSocketError(error: unknown): string {
+    const raw = error instanceof Error ? error.message : 'Connection failed';
+    const normalized = raw.toLowerCase();
+
+    if (normalized.includes('401') || normalized.includes('403') || normalized.includes('unauthorized')) {
+      return 'Authentication failed. Check the Clash/Mihomo secret or PassWall external-controller secret.';
+    }
+
+    if (normalized.includes('404') || normalized.includes('unexpected server response') || normalized.includes('426')) {
+      return 'Clash-compatible WebSocket /connections is unavailable. For PassWall, use Mihomo and enable external-controller; sing-box/xray is not supported.';
+    }
+
+    return raw;
+  }
+
+  private mapClashCloseCode(code: number): string {
+    if (code === 1008) {
+      return 'Authentication failed. Check the Clash/Mihomo secret or PassWall external-controller secret.';
+    }
+
+    return `Clash-compatible WebSocket /connections closed with code ${code}. For PassWall, use Mihomo and enable external-controller.`;
   }
 
   /**

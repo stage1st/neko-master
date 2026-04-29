@@ -41,6 +41,22 @@ CGO_ENABLED=0 GOOS=linux GOARCH=arm64 GOCACHE=/tmp/go-build go build -trimpath -
   --gateway-token <optional-clash-secret>
 ```
 
+### PassWall (Mihomo on OpenWrt)
+
+PassWall is not a separate gateway type in Neko Master. When PassWall runs a Mihomo/Clash kernel with `external-controller` enabled, use the existing `clash` type:
+
+```bash
+./neko-agent \
+  --server-url https://your-neko.example.com \
+  --backend-id 3 \
+  --backend-token <backend-token> \
+  --gateway-type clash \
+  --gateway-url http://192.168.1.1:9090 \
+  --gateway-token <mihomo-external-controller-secret>
+```
+
+If PassWall is using `sing-box` or `xray`, the current Clash-compatible integration will not work.
+
 ### One-line Install Script (`curl | sh`)
 
 ```bash

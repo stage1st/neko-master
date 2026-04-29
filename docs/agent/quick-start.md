@@ -28,6 +28,23 @@ curl -fsSL https://raw.githubusercontent.com/foru17/neko-master/main/apps/agent/
         sh
 ```
 
+### PassWall（Mihomo）网关
+
+如果你的 OpenWrt 使用 PassWall，但代理核心是 Mihomo/Clash，并且已开启 `external-controller`，依然按 `Clash / Mihomo` 接入：
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/foru17/neko-master/main/apps/agent/install.sh \
+  | env NEKO_SERVER='http://your-panel:3000' \
+        NEKO_BACKEND_ID='3' \
+        NEKO_BACKEND_TOKEN='ag_zzz' \
+        NEKO_GATEWAY_TYPE='clash' \
+        NEKO_GATEWAY_URL='http://192.168.1.1:9090' \
+        NEKO_GATEWAY_TOKEN='mihomo-secret' \
+        sh
+```
+
+若 PassWall 底层是 `sing-box` 或 `xray-core`，当前版本会返回不兼容错误，需要改为 Mihomo 或后续适配层。
+
 ### Surge 网关
 
 ```bash

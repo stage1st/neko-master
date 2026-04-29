@@ -459,6 +459,10 @@ function getInitialFormState(): BackendFormState {
   };
 }
 
+function getGatewayTypeHelpMessage(t: (key: string) => string, type: 'clash' | 'surge'): string {
+  return type === 'surge' ? t('surgeTypeHint') : t('clashTypeHint');
+}
+
 function parseAgentId(url: string): string {
   const raw = url.replace(/^agent:\/\//i, "").split(/[/?#]/)[0] || "";
   try {
@@ -1929,6 +1933,9 @@ export function BackendConfigDialog({
                             <option value="clash">Clash / Mihomo</option>
                             <option value="surge">Surge</option>
                           </select>
+                          <p className="mt-1 text-[11px] text-muted-foreground">
+                            {getGatewayTypeHelpMessage(t, formData.type)}
+                          </p>
                         </div>
                         {formData.mode === "direct" && (
                           <div>
@@ -2700,6 +2707,9 @@ export function BackendConfigDialog({
                   <option value="clash">Clash / Mihomo</option>
                   <option value="surge">Surge</option>
                 </select>
+                <p className="mt-1 text-[11px] text-muted-foreground">
+                  {getGatewayTypeHelpMessage(t, formData.type)}
+                </p>
               </div>
               {formData.mode === "direct" && (
                 <div>
@@ -2745,12 +2755,20 @@ export function BackendConfigDialog({
                     }
                     className="h-9 mt-1"
                   />
+                  {formData.type === 'clash' && (
+                    <p className="mt-1 text-[11px] text-muted-foreground">
+                      {t("clashTokenHint")}
+                    </p>
+                  )}
                 </div>
               </>
             ) : (
               <div className="space-y-3 rounded-md border border-dashed p-3">
                 <p className="text-[11px] text-muted-foreground">{t("agentTokenAutoHint")}</p>
                 <p className="text-[11px] text-muted-foreground">{t("agentGatewayOptionalHint")}</p>
+                {formData.type === 'clash' && (
+                  <p className="text-[11px] text-muted-foreground">{t("agentPasswallHint")}</p>
+                )}
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="text-xs font-medium">{t("host")}</label>

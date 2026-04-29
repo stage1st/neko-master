@@ -36,6 +36,22 @@
   --gateway-token 'clash-secret'
 ```
 
+## Example: PassWall (Mihomo)
+
+PassWall is not a separate `gateway-type`. When OpenWrt PassWall is running a Mihomo/Clash kernel with `external-controller` enabled, keep using `clash`:
+
+```bash
+./neko-agent \
+  --server-url 'http://10.0.0.2:3000' \
+  --backend-id 10 \
+  --backend-token 'ag_xxx' \
+  --gateway-type 'clash' \
+  --gateway-url 'http://192.168.1.1:9090' \
+  --gateway-token 'mihomo-secret'
+```
+
+If PassWall is using `sing-box` or `xray-core`, the current version is not compatible.
+
 ## Example: Surge
 
 ```bash
